@@ -91,7 +91,7 @@ app.get('/probability', function (req, res) {
                 response_object = JSON.parse(data);
                 if('success' in response_object) {
                     res.json(response_object);
-                } else if ('error' in response) {
+                } else if ('error' in response_object) {
                     res.status(500).send(response_object);
                 } else {
                     res.status(500).send({
