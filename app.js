@@ -110,7 +110,7 @@ app.get('/probability', function (req, res) {
 })
 
 app.get('/call', function (req, res) {
-    http.get('http://localhost:8081/probability', (resp) => {
+    http.get('http://localhost:8081/get-success', (resp) => {
         let data = '';;
         resp.on('data', (chunk) => {
             data += chunk;
