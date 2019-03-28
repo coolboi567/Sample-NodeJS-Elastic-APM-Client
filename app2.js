@@ -1,7 +1,7 @@
 const https = require('https');
 
 const apm = require('elastic-apm-node').start({
-    serviceName: 'node-app-01',
+    serviceName: 'node-app-02',
     serviceVersion: "0.1",
     secretToken: '',
     serverUrl: 'http://35.200.201.248:8200',
@@ -20,7 +20,7 @@ const bodyParser = require("body-parser");
 const http = require('http');
 const app = express();
 const ip = "0.0.0.0"
-const port = 8080;
+const port = 8081;
 
 app.use(bodyParser.json()); // for parsing application/json
 
@@ -79,7 +79,7 @@ app.get('/probability', function (req, res) {
             status: 'Route'+req.url+' Not found.'
         });
     } else {
-        https.get('http://localhost:8081/probability', (resp) => {
+        https.get('http://localhost:8080/probability', (resp) => {
             let data = '';
             var response_object = {};
             // A chunk of data has been recieved.
