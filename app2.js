@@ -67,12 +67,12 @@ app.post('/post-failure', function (req, res) {
 // Probability
 app.get('/probability', function (req, res) {
     var luck = Math.random();
-    if (luck <= 0.25) {
+    if (luck <= 0.5) {
         res.json({
             status: "success",
             response: 'GET request to the success api from node-app-02'
         })
-    } else if (luck <= 0.5) {
+    } else if (luck <= 0.7) {
         /*throw new Error("/post-failure Some random error")*/
         /*return res.send("...")*/
         res.status(500).send({
@@ -88,14 +88,11 @@ app.get('/probability', function (req, res) {
             });
             // The whole response has been received. Print out the result.
             resp.on('end', () => {
-                response_object = JSON.parse(data).explanation;
+                response_object = JSON.parse(data);
                 if('success' in response_object) {
                     res.json(response_object);
-                } else if ('error' in response) {
-                    res.status(500).send({
-                        status: 'success',
-                        response: '/probability : Inner Response 500 from node-app-02'
-                    });
+                } else if ('error' in response_object) {
+                    res.status(500).send(response_object);
                 } else {
                     res.status(500).send({
                         error: '/probability : Some Internal Error Occurred from node-app-02'
@@ -106,11 +103,39 @@ app.get('/probability', function (req, res) {
         }).on("error", (err) => {
             console.log("Error: " + err.message);
             res.status(500).send({
-                error: err
+                error: err.message
             });
         });
     }
 })
+
+
+app.get('/call', function (req, res) {
+    http.get('http://localhost:8080/probability', (resp) => {
+        let data = '';;
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+        resp.on('end', () => {
+            response_object = JSON.parse(data);
+            if('success' in response_object) {
+                res.json(response_object);
+            } else if ('error' in response_object) {
+                res.status(500).send(response_object);
+            } else {
+                res.status(500).send({
+                    error: response_object
+                });
+            }
+            console.log(response_object)
+        }); 
+    }).on("error", (err) => {
+        console.log("Error: " + err.message);
+        res.status(500).send({
+            error: err
+        });
+    });
+}
 
 // 404
 // 500 - Any server error
