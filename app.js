@@ -12,7 +12,7 @@ const apm = require('elastic-apm-node').start({
         '/sanity',
         /^\/admin\//i
         ],*/
-    logLevel: "debug",  // Possible levels are: trace, debug, info (default), warn, error, and fatal
+    logLevel: "info",  // Possible levels are: trace, debug, info (default), warn, error, and fatal
     /*    logger: require('pino')({ level: 'info' }, './elastic-apm.log')*/
 })
 const express = require("express");
