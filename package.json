@@ -12,12 +12,13 @@
     "apm",
     "nodejs",
     "nodejs",
-    "apm"
+    "apm",
   ],
   "author": "Prashant Shahi <coolboi567@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "elastic-apm-node": "^2.6.0",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "https": "^1.0.0"
   }
 }

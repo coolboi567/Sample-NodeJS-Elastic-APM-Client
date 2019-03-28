@@ -4,7 +4,7 @@ const apm = require('elastic-apm-node').start({
     serviceName: 'node-app-01',
     serviceVersion: "0.1",
     secretToken: '',
-    serverUrl: 'http://35.200.201.248:8200',
+    serverUrl: 'http://localhost:8200',
     //transactionSampleRate: 0.5,     // Sampling rate to 50%
     /*ignoreUrls: [     // Add urls which need not be traced here (those 404 floods perhaps)
         '/',
@@ -76,7 +76,7 @@ app.get('/probability', function (req, res) {
         /*throw new Error("/post-failure Some random error")*/
         /*return res.send("...")*/
         res.status(500).send({
-            status: 'Route'+req.url+' Not found.'
+            status: '/probability : Response 500 from node-app-01'
         });
     } else {
         https.get('http://localhost:8081/probability', (resp) => {
@@ -89,6 +89,17 @@ app.get('/probability', function (req, res) {
             // The whole response has been received. Print out the result.
             resp.on('end', () => {
                 response_object = JSON.parse(data).explanation;
+                if('success' in response_object) {
+                    res.json(response_object);
+                } else if ('error' in response) {
+                    res.status(500).send({
+                        status: '/probability : Inner Response 500 from node-app-01'
+                    });
+                } else {
+                    res.status(500).send({
+                        status: '/probability : Some Internal Error Occurred from node-app-01'
+                    });
+                }
                 console.log(response_object)
             });
         }).on("error", (err) => {
