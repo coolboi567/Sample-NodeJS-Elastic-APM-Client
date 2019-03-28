@@ -83,12 +83,11 @@ app.get('/probability', function (req, res) {
         .on('response', function(response) {
             console.log(response.statusCode) // 200
             console.log(response.headers['content-type']) // 'image/png'
-            response_object = JSON.parse(data);
-            console.log(response_object)
-            if('success' in response_object) {
-                res.json(response_object);
-            } else if ('error' in response_object) {
-                res.status(500).send(response_object);
+            console.log(response)
+            if('success' in response) {
+                res.json(response);
+            } else if ('error' in response) {
+                res.status(500).send(response);
             } else {
                 res.status(500).send({
                     error: '/probability : Some Internal Error Occurred from node-app-01'
@@ -109,15 +108,14 @@ app.get('/call', function (req, res) {
     .on('response', function(response) {
             console.log(response.statusCode) // 200
             console.log(response.headers['content-type']) // 'image/png'
-            response_object = JSON.parse(data);
-            console.log(response_object)
-            if('success' in response_object) {
-                res.json(response_object);
-            } else if ('error' in response_object) {
-                res.status(500).send(response_object);
+            console.log(response)
+            if('success' in response) {
+                res.json(response);
+            } else if ('error' in response) {
+                res.status(500).send(response);
             } else {
                 res.status(500).send({
-                    error: response_object
+                    error: response
                 });
             }
        })
