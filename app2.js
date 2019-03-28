@@ -93,11 +93,13 @@ app.get('/probability', function (req, res) {
                     res.json(response_object);
                 } else if ('error' in response) {
                     res.status(500).send({
-                        status: '/probability : inner Response 500 from node-app-02'
+                        status: 'success',
+                        response: '/probability : inner Response 500 from node-app-02',
+
                     });
                 } else {
                     res.status(500).send({
-                        status: '/probability : Some Internal Error Occurred from node-app-02'
+                        error: '/probability : Some Internal Error Occurred from node-app-02'
                     });
                 }
                 console.log(response_object)
