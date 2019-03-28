@@ -135,7 +135,7 @@ app.get('/call', function (req, res) {
             error: err
         });
     });
-}
+});
 
 // 404
 // 500 - Any server error
