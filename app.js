@@ -1,4 +1,4 @@
-const https = require('http');
+var request = require('request');
 
 const apm = require('elastic-apm-node').start({
     serviceName: 'node-app-01',
@@ -79,44 +79,38 @@ app.get('/probability', function (req, res) {
             status: '/probability : Response 500 from node-app-01'
         });
     } else {
-        http.get('http://localhost:8081/probability', (resp) => {
-            let data = '';
-            var response_object = {};
-            // A chunk of data has been recieved.
-            resp.on('data', (chunk) => {
-                data += chunk;
-            });
-            // The whole response has been received. Print out the result.
-            resp.on('end', () => {
-                response_object = JSON.parse(data);
-                if('success' in response_object) {
-                    res.json(response_object);
-                } else if ('error' in response_object) {
-                    res.status(500).send(response_object);
-                } else {
-                    res.status(500).send({
-                        error: '/probability : Some Internal Error Occurred from node-app-01'
-                    });
-                }
-                console.log(response_object)
-            });
-        }).on("error", (err) => {
+        request.get('http://localhost:8081/probability')
+        .on('response', function(response) {
+            console.log(response.statusCode) // 200
+            console.log(response.headers['content-type']) // 'image/png'
+            response_object = JSON.parse(data);
+            console.log(response_object)
+            if('success' in response_object) {
+                res.json(response_object);
+            } else if ('error' in response_object) {
+                res.status(500).send(response_object);
+            } else {
+                res.status(500).send({
+                    error: '/probability : Some Internal Error Occurred from node-app-01'
+                });
+            }
+        })
+        .on('error', function() {
             console.log("Error: " + err.message);
             res.status(500).send({
                 error: err
             });
-        });
+        })
     }
-})
+});
 
 app.get('/call', function (req, res) {
-    http.get('http://localhost:8081/get-success', (resp) => {
-        let data = '';;
-        resp.on('data', (chunk) => {
-            data += chunk;
-        });
-        resp.on('end', () => {
+    request.get('http://localhost:8081/get-success')
+    .on('response', function(response) {
+            console.log(response.statusCode) // 200
+            console.log(response.headers['content-type']) // 'image/png'
             response_object = JSON.parse(data);
+            console.log(response_object)
             if('success' in response_object) {
                 res.json(response_object);
             } else if ('error' in response_object) {
@@ -126,14 +120,10 @@ app.get('/call', function (req, res) {
                     error: response_object
                 });
             }
-            console.log(response_object)
-        }); 
-    }).on("error", (err) => {
-        console.log("Error: " + err.message);
-        res.status(500).send({
-            error: err
-        });
-    });
+       })
+    .on('error', function() {
+        console.log('error:', error); // Print the error if one occurred
+    })
 });
 
 // 404
