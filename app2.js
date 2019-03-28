@@ -70,7 +70,7 @@ app.get('/probability', function (req, res) {
     if (luck <= 0.25) {
         res.json({
             status: "success",
-            response: 'GET request to the success api'
+            response: 'GET request to the success api from node-app-02'
         })
     } else if (luck <= 0.5) {
         /*throw new Error("/post-failure Some random error")*/
