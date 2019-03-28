@@ -1,4 +1,4 @@
-const https = require('https');
+const https = require('http');
 
 const apm = require('elastic-apm-node').start({
     serviceName: 'node-app-01',
@@ -79,7 +79,7 @@ app.get('/probability', function (req, res) {
             status: '/probability : Response 500 from node-app-01'
         });
     } else {
-        https.get('http://localhost:8081/probability', (resp) => {
+        http.get('http://localhost:8081/probability', (resp) => {
             let data = '';
             var response_object = {};
             // A chunk of data has been recieved.
