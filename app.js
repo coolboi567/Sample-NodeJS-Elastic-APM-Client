@@ -105,6 +105,9 @@ app.get('/probability', function (req, res) {
             });
         }).on("error", (err) => {
             console.log("Error: " + err.message);
+            res.status(500).send({
+                error: err
+            });
         });
     }
 })

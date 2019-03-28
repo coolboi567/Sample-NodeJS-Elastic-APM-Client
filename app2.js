@@ -94,8 +94,7 @@ app.get('/probability', function (req, res) {
                 } else if ('error' in response) {
                     res.status(500).send({
                         status: 'success',
-                        response: '/probability : inner Response 500 from node-app-02',
-
+                        response: '/probability : Inner Response 500 from node-app-02'
                     });
                 } else {
                     res.status(500).send({
@@ -106,6 +105,9 @@ app.get('/probability', function (req, res) {
             });
         }).on("error", (err) => {
             console.log("Error: " + err.message);
+            res.status(500).send({
+                error: err
+            });
         });
     }
 })
